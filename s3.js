@@ -1,6 +1,7 @@
-//dependencies 
+//dependencies
 const AWS = require("aws-sdk");
 const { v4: uuidv4 } = require("uuid");
+const axios = require("axios");
 
 // configs
 const config = {
@@ -68,5 +69,28 @@ const listS3Contents = async () => {
     console.log("S3 contents:", data);
   } catch (err) {
     console.log("Error:", err);
+  }
+};
+
+// uploading image by converting it to base64. 
+const uploadImageToS3FromUrl = async (name) => {
+  try {
+    const salt = uuidv4();
+    const fileNameWithFullPath = `folder1/folder2/${name}-${salt}`;
+
+    // fetch data and convert to buffer.
+    const url = "";
+    const res = await axios.get(url, { responseType: "arraybuffer" });
+    const buffer = Buffer.from(res.data, "base64");
+    
+    const uploadParams = { Bucket: targetBucket, Key: "", Body: "" };
+    uploadParams.Body = buffer;
+    uploadParams.Key = fileNameWithFullPath;
+
+    const s3response = await s3.upload(uploadParams).promise();
+    return await s3response.Location; // return url
+
+  } catch (error) {
+    console.log("Error response", error);
   }
 };
