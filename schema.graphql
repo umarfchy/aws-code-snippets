@@ -1,0 +1,12 @@
+# custom data type in aws app sync
+
+type myDataType @model {
+  id: ID!
+  filed1: String
+  customData: [customDataType]
+}
+
+type customDataType {
+  date: AWSDateTime
+  value: Float
+}
