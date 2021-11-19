@@ -10,3 +10,28 @@ type customDataType {
   date: AWSDateTime
   value: Float
 }
+
+
+# invoke mutation using lambda function
+type Mutation {
+  processABCD(input: lambdaInputABCD!): lambdaOutputABCD
+    @function(name: "lambdaFunctionABCD-${env}")
+    @auth(
+
+rules: [
+      { allow: public, operations: [create] }
+      { allow: private, operations: [create] }
+      { allow: groups, groups: [], operations: [create] }
+    ]
+)
+}
+
+input lambdaABCDInput {
+  field1: String!
+  field2: String!
+}
+
+enum lambdaABCDOutput {
+  SUCCESS
+  FAIL
+}
